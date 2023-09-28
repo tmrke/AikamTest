@@ -1,6 +1,9 @@
 package ru.ageev;
 
 
+import ru.ageev.criteria.Criteria;
+
+import java.util.List;
 
 /**
  * Hello world!
@@ -11,7 +14,7 @@ public class App {
 
         JsonParser jsonParser = new JsonParser();
 
-        jsonParser.parseToCriteria(uri);
+        List<Criteria> criteria = jsonParser.getCriteriaList(uri);
     }
 }
 
