@@ -4,6 +4,9 @@
       "lastName": "Иванов"
     },
     {
+      "lastName": "Петров"
+    },
+    {
       "productName": "Product3",
       "minTimes": 2
     },

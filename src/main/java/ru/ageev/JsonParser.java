@@ -15,12 +15,12 @@ import java.util.List;
 
 public class JsonParser {
     private ObjectMapper objectMapper;
-    private List<Criteria> criteriaList;
 
     private File file;
 
     public JsonParser() {
     }
+
 
     public List<Criteria> getCriteriaList(String uri) {
         objectMapper = new ObjectMapper();
@@ -42,24 +42,23 @@ public class JsonParser {
         return criteriaList;
     }
 
+    //TODO сделать список строк для сравнения в отдельном файле
+
     private Class getCriteriaType(JsonNode jsonNode) {
         Iterator<String> fieldNames = jsonNode.fieldNames();
 
         while (fieldNames.hasNext()) {
             String str = fieldNames.next();
 
-            if (str.equals("lastName")) {
-                return LastNameCriteria.class;
-            } else if (str.contains("productName")) {
-                return ProductNameAndCountCriteria.class;
-            } else if (str.contains("minExpenses")) {
-                return MinAndMaxExpenses.class;
-            } else if (str.contains("badCustomers")) {
-                return BadCustomersCount.class;
-            } else {
-                throw new IllegalArgumentException("Неправильный формат критериев");
+            return switch (str) {
+                case "lastName" -> LastNameCriteria.class;
+                case "productName" -> ProductNameAndCountCriteria.class;
+                case "minExpenses" -> MinAndMaxExpenses.class;
+                case "badCustomers" -> BadCustomersCount.class;
+                default -> throw new IllegalArgumentException("Неправильный формат критериев");
+
                 //TODO
-            }
+            };
         }
 
         throw new IllegalArgumentException("Неправильный формат критериев");
