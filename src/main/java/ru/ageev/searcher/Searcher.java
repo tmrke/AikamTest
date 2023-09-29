@@ -48,18 +48,14 @@ public class Searcher {
 
                 query = "SELECT c.* " +
                         "FROM customers c " +
-                        "JOIN ( " +
-                        "    SELECT o.customer_id, o.product_id " +
+                        "WHERE c.id IN ( " +
+                        "    SELECT o.customer_id " +
                         "    FROM orders o " +
-                        "    WHERE o.product_id IN ( " +
-                        "        SELECT p.id " +
-                        "        FROM products p " +
-                        "        WHERE p.name = ? " +
-                        "    ) " +
-                        "    GROUP BY o.customer_id, o.product_id " +
+                        "    JOIN products p ON o.product_id = p.id " +
+                        "    WHERE p.name = ? " +
+                        "    GROUP BY o.customer_id " +
                         "    HAVING COUNT(*) >= ? " +
-                        ") filtered_orders " +
-                        "ON c.id = filtered_orders.customer_id;";
+                        ");";
 
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 preparedStatement.setString(1, ((ProductNameAndCountCriteria) currentCriteria).getProductName());
