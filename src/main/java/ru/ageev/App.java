@@ -1,43 +1,44 @@
 package ru.ageev;
 
 
-import config.DatabaseConnection;
 import ru.ageev.criteria.Criteria;
+import ru.ageev.json_parser.ToCriteriaParser;
 import ru.ageev.models.Customer;
+import ru.ageev.searcher.Searcher;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class App {
     public static void main(String[] args) throws SQLException {
         String uri = "src/main/resources/criteria/criteria1.json";
 
-        JsonParser jsonParser = new JsonParser();
+        ToCriteriaParser jsonParser = new ToCriteriaParser();
 
         List<Criteria> criteria = jsonParser.getCriteriaList(uri);
-        Connection connection = DatabaseConnection.getConnection();
+//        Connection connection = DatabaseConnection.getConnection();
+//
+//        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customer WHERE last_name='Иванов'");
+//        ResultSet resultSet = preparedStatement.executeQuery();
+//
+//        List<Customer> customers = new ArrayList<>();
+//
+//        while (resultSet.next()){
+//            Customer customer = new Customer();
+//
+//            customer.setId(resultSet.getInt("id"));
+//            customer.setName(resultSet.getString("name"));
+//            customer.setLastname(resultSet.getString("last_name"));
+//
+//            customers.add(customer);
+//        }
+//
+//        System.out.println(customers.get(0).getLastname());
 
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customer WHERE last_name='Иванов'");
-        ResultSet resultSet = preparedStatement.executeQuery();
+        Searcher searcher = new Searcher(criteria);
+        List<Customer> customersByCriteria = searcher.getCustomersByCriteria();
 
-        List<Customer> customers = new ArrayList<>();
-
-        while (resultSet.next()){
-            Customer customer = new Customer();
-
-            customer.setId(resultSet.getInt("id"));
-            customer.setName(resultSet.getString("name"));
-            customer.setLastname(resultSet.getString("last_name"));
-
-            customers.add(customer);
-        }
-
-        System.out.println(customers.get(0).getLastname());
-
-        //List<Customer> customers = Collections.singletonList(preparedStatement.executeQuery().getObject("last_name", Customer.class));
+        System.out.println(customersByCriteria.get(0).getLastname());
     }
 }
 

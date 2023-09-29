@@ -1,4 +1,4 @@
-package config;
+package ru.ageev.config;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

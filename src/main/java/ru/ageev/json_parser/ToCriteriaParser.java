@@ -1,4 +1,4 @@
-package ru.ageev;
+package ru.ageev.json_parser;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,19 +6,16 @@ import ru.ageev.criteria.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.GenericDeclaration;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class JsonParser {
+public class ToCriteriaParser {
     private ObjectMapper objectMapper;
 
     private File file;
 
-    public JsonParser() {
+    public ToCriteriaParser() {
     }
 
 
