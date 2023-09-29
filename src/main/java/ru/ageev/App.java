@@ -6,7 +6,6 @@ import ru.ageev.models.Customer;
 import ru.ageev.searcher.Searcher;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class App {
