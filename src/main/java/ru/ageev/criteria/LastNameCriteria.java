@@ -1,6 +1,7 @@
 package ru.ageev.criteria;
 
 import ru.ageev.criteria.query.QueryCriteria;
+import ru.ageev.dao.CustomerDao;
 import ru.ageev.models.Customer;
 
 import java.sql.Connection;
@@ -20,11 +21,16 @@ public class LastNameCriteria implements Criteria {
     }
 
     @Override
-    public List<Customer> getCustomersByCriteria(Connection connection, Criteria criteria) throws SQLException {
+    public List<CustomerDao> getCustomersByCriteria(Connection connection, Criteria criteria) throws SQLException {
         String query = QueryCriteria.LAST_NAME.getQuery();
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, ((LastNameCriteria) criteria).getLastName());
         return getCustomersByPrepareStatement(preparedStatement);
+    }
+
+    @Override
+    public String toString() {
+        return "lastName";
     }
 }

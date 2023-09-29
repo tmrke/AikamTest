@@ -11,17 +11,12 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ToCriteriaParser {
-    private ObjectMapper objectMapper;
-
-    private File file;
-
     public ToCriteriaParser() {
     }
 
-
     public List<Criteria> getCriteriaList(String uri) {
-        objectMapper = new ObjectMapper();
-        file = new File(uri);
+        ObjectMapper objectMapper = new ObjectMapper();
+        File file = new File(uri);
         List<Criteria> criteriaList = new ArrayList<>();
 
         try {
@@ -29,7 +24,7 @@ public class ToCriteriaParser {
 
             if (nodeArray != null && nodeArray.isArray()) {
                 for (JsonNode jsonNode : nodeArray) {
-                    criteriaList.add((Criteria) objectMapper.treeToValue(jsonNode, getCriteriaType(jsonNode)));
+                    criteriaList.add((Criteria) objectMapper.treeToValue(jsonNode, getCriteriaClass(jsonNode)));
                 }
             }
         } catch (RuntimeException | IOException e) {
@@ -39,9 +34,7 @@ public class ToCriteriaParser {
         return criteriaList;
     }
 
-    //TODO сделать список строк для сравнения в отдельном файле
-
-    private Class getCriteriaType(JsonNode jsonNode) {
+    private Class<?> getCriteriaClass(JsonNode jsonNode) {
         Iterator<String> fieldNames = jsonNode.fieldNames();
 
         while (fieldNames.hasNext()) {
@@ -52,9 +45,7 @@ public class ToCriteriaParser {
                 case "productName" -> ProductNameAndCountCriteria.class;
                 case "minExpenses" -> MinAndMaxExpensesCriteria.class;
                 case "badCustomers" -> BadCustomersCountCriteria.class;
-                default -> throw new IllegalArgumentException("Неправильный формат критериев");
-
-                //TODO
+                default ->  throw new IllegalArgumentException("Неправильный формат критериев");
             };
         }
 

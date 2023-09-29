@@ -1,6 +1,7 @@
 package ru.ageev.criteria;
 
 import ru.ageev.criteria.query.QueryCriteria;
+import ru.ageev.dao.CustomerDao;
 import ru.ageev.models.Customer;
 
 import java.sql.Connection;
@@ -29,7 +30,7 @@ public class MinAndMaxExpensesCriteria implements Criteria {
     }
 
     @Override
-    public List<Customer> getCustomersByCriteria(Connection connection, Criteria criteria) throws SQLException {
+    public List<CustomerDao> getCustomersByCriteria(Connection connection, Criteria criteria) throws SQLException {
         String query = QueryCriteria.MIN_AND_MAX_EXPENSES.getQuery();
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -37,5 +38,10 @@ public class MinAndMaxExpensesCriteria implements Criteria {
         preparedStatement.setInt(2, ((MinAndMaxExpensesCriteria) criteria).getMaxExpenses());
 
         return getCustomersByPrepareStatement(preparedStatement);
+    }
+
+    @Override
+    public String toString() {
+        return "minExpenses";
     }
 }

@@ -1,5 +1,6 @@
 package ru.ageev.criteria;
 
+import ru.ageev.dao.CustomerDao;
 import ru.ageev.models.Customer;
 
 import java.sql.Connection;
@@ -10,15 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface Criteria {
-    List<Customer> getCustomersByCriteria(Connection connection, Criteria criteria) throws SQLException;
+    List<CustomerDao> getCustomersByCriteria(Connection connection, Criteria criteria) throws SQLException;
 
-    default List<Customer> getCustomersByPrepareStatement(PreparedStatement preparedStatement) throws SQLException {
+    default List<CustomerDao> getCustomersByPrepareStatement(PreparedStatement preparedStatement) throws SQLException {
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        List<Customer> customers = new ArrayList<>();
+        List<CustomerDao> customers = new ArrayList<>();
 
         while (resultSet.next()) {
-            Customer customer = new Customer();
+            CustomerDao customer = new CustomerDao();
 
             customer.setId(resultSet.getInt("id"));
             customer.setName(resultSet.getString("name"));

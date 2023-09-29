@@ -1,6 +1,7 @@
 package ru.ageev.criteria;
 
 import ru.ageev.criteria.query.QueryCriteria;
+import ru.ageev.dao.CustomerDao;
 import ru.ageev.models.Customer;
 
 import java.sql.Connection;
@@ -29,7 +30,7 @@ public class ProductNameAndCountCriteria implements Criteria {
     }
 
     @Override
-    public List<Customer> getCustomersByCriteria(Connection connection, Criteria criteria) throws SQLException {
+    public List<CustomerDao> getCustomersByCriteria(Connection connection, Criteria criteria) throws SQLException {
         String query = QueryCriteria.PRODUCT_NAME_AND_COUNT.getQuery();
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -37,5 +38,10 @@ public class ProductNameAndCountCriteria implements Criteria {
         preparedStatement.setInt(2, ((ProductNameAndCountCriteria) criteria).getMinTimes());
 
         return getCustomersByPrepareStatement(preparedStatement);
+    }
+
+    @Override
+    public String toString() {
+        return "productName";
     }
 }
