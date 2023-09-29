@@ -7,8 +7,9 @@ public class CustomerMapper {
     public static Customer getCustomer(CustomerDao customerDao) {
         Customer customer = new Customer();
 
-        customer.setName(customer.getName());
-        customer.setLastname(customer.getLastname());
+        customer.setFirstName(customerDao.getName());
+        customer.setLastName(customerDao.getLastname());
+
         return customer;
     }
 }

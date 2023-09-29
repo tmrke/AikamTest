@@ -42,6 +42,6 @@ public class MinAndMaxExpensesCriteria implements Criteria {
 
     @Override
     public String toString() {
-        return "minExpenses";
+        return "criteria: minExpenses";
     }
 }

@@ -1,23 +1,24 @@
 package ru.ageev.models;
 
 public class Customer {
-    private String name;
-    private String lastname;
+    private String lastName;
 
-    public String getName() {
-        return name;
+    private String firstName;
+
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
 }

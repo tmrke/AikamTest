@@ -33,6 +33,6 @@ public class BadCustomersCountCriteria implements Criteria {
 
     @Override
     public String toString() {
-        return "bad customers";
+        return "criteria: bad customers";
     }
 }

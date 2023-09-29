@@ -42,6 +42,6 @@ public class ProductNameAndCountCriteria implements Criteria {
 
     @Override
     public String toString() {
-        return "productName";
+        return "criteria: productName";
     }
 }

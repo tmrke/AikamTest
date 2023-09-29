@@ -31,6 +31,6 @@ public class LastNameCriteria implements Criteria {
 
     @Override
     public String toString() {
-        return "lastName";
+        return "criteria: lastName";
     }
 }
