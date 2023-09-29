@@ -1,12 +1,14 @@
 package ru.ageev;
 
 
+import ru.ageev.config.DatabaseConnection;
 import ru.ageev.criteria.Criteria;
 import ru.ageev.json_parser.ToCriteriaParser;
 import ru.ageev.models.Customer;
 import ru.ageev.searcher.Searcher;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class App {
@@ -18,7 +20,7 @@ public class App {
         List<Criteria> criteria = jsonParser.getCriteriaList(uri);
 //        Connection connection = DatabaseConnection.getConnection();
 //
-//        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customer WHERE last_name='Иванов'");
+//        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customers WHERE last_name='Иванов'");
 //        ResultSet resultSet = preparedStatement.executeQuery();
 //
 //        List<Customer> customers = new ArrayList<>();
@@ -36,9 +38,16 @@ public class App {
 //        System.out.println(customers.get(0).getLastname());
 
         Searcher searcher = new Searcher(criteria);
-        List<Customer> customersByCriteria = searcher.getCustomersByCriteria();
+        List<List<Customer>> customersByCriteria = searcher.getCustomersByCriteria();
 
-        System.out.println(customersByCriteria.get(0).getLastname());
+        for (List<Customer> criteriaCustomers : customersByCriteria) {
+            for (Customer customer : criteriaCustomers) {
+                System.out.println("ID: " + customer.getId());
+                System.out.println("Имя: " + customer.getName());
+                System.out.println("Фамилия: " + customer.getLastname());
+                System.out.println();
+            }
+        }
     }
 }
 

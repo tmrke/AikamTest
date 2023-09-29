@@ -50,8 +50,8 @@ public class ToCriteriaParser {
             return switch (str) {
                 case "lastName" -> LastNameCriteria.class;
                 case "productName" -> ProductNameAndCountCriteria.class;
-                case "minExpenses" -> MinAndMaxExpenses.class;
-                case "badCustomers" -> BadCustomersCount.class;
+                case "minExpenses" -> MinAndMaxExpensesCriteria.class;
+                case "badCustomers" -> BadCustomersCountCriteria.class;
                 default -> throw new IllegalArgumentException("Неправильный формат критериев");
 
                 //TODO

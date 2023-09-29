@@ -1,6 +1,6 @@
 package ru.ageev.criteria;
 
-public class MinAndMaxExpenses implements Criteria {
+public class MinAndMaxExpensesCriteria implements Criteria {
     private int minExpenses;
     private int maxExpenses;
     public int getMinExpenses() {

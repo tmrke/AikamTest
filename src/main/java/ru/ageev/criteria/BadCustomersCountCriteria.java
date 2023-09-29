@@ -1,6 +1,6 @@
 package ru.ageev.criteria;
 
-public class BadCustomersCount implements Criteria {
+public class BadCustomersCountCriteria implements Criteria {
     private int badCustomers;
 
     public int getBadCustomers() {
