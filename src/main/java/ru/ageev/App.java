@@ -1,7 +1,5 @@
 package ru.ageev;
 
-
-import ru.ageev.config.DatabaseConnection;
 import ru.ageev.criteria.Criteria;
 import ru.ageev.json_parser.ToCriteriaParser;
 import ru.ageev.models.Customer;
@@ -18,24 +16,6 @@ public class App {
         ToCriteriaParser jsonParser = new ToCriteriaParser();
 
         List<Criteria> criteria = jsonParser.getCriteriaList(uri);
-//        Connection connection = DatabaseConnection.getConnection();
-//
-//        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customers WHERE last_name='Иванов'");
-//        ResultSet resultSet = preparedStatement.executeQuery();
-//
-//        List<Customer> customers = new ArrayList<>();
-//
-//        while (resultSet.next()){
-//            Customer customer = new Customer();
-//
-//            customer.setId(resultSet.getInt("id"));
-//            customer.setName(resultSet.getString("name"));
-//            customer.setLastname(resultSet.getString("last_name"));
-//
-//            customers.add(customer);
-//        }
-//
-//        System.out.println(customers.get(0).getLastname());
 
         Searcher searcher = new Searcher(criteria);
         List<List<Customer>> customersByCriteria = searcher.getCustomersByCriteria();

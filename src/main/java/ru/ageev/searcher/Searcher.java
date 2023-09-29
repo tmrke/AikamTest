@@ -25,10 +25,8 @@ public class Searcher {
         List<List<Customer>> allCustomersLists = new ArrayList<>();
 
         for (Criteria currentCriteria : criteriaList) {
-            List<Customer> customersByLastNameCriteria = new ArrayList<>();
-
             if (currentCriteria instanceof LastNameCriteria) {
-
+                List<Customer> customersByLastNameCriteria = new ArrayList<>();
                 query = "SELECT * FROM customers WHERE last_name=?";
 
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -45,12 +43,41 @@ public class Searcher {
                 }
 
                 allCustomersLists.add(customersByLastNameCriteria);
-//            } else if (currentCriteria instanceof ProductNameAndCountCriteria) {
-//                query = "SELECT * FROM customers WHERE last_name='Иванов'";
-//
-//                PreparedStatement preparedStatement = connection.prepareStatement(query);
-////                preparedStatement.setString(1, ((ProductNameAndCountCriteria) currentCriteria));
-//                resultSet = preparedStatement.executeQuery();
+            } else if (currentCriteria instanceof ProductNameAndCountCriteria) {
+                List<Customer> customersByProductNameAndCountCriteria = new ArrayList<>();
+
+                query = "SELECT c.* " +
+                        "FROM customers c " +
+                        "JOIN ( " +
+                        "    SELECT o.customer_id, o.product_id " +
+                        "    FROM orders o " +
+                        "    WHERE o.product_id IN ( " +
+                        "        SELECT p.id " +
+                        "        FROM products p " +
+                        "        WHERE p.name = ? " +
+                        "    ) " +
+                        "    GROUP BY o.customer_id, o.product_id " +
+                        "    HAVING COUNT(*) >= ? " +
+                        ") filtered_orders " +
+                        "ON c.id = filtered_orders.customer_id;";
+
+                PreparedStatement preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setString(1, ((ProductNameAndCountCriteria) currentCriteria).getProductName());
+                preparedStatement.setInt(2, ((ProductNameAndCountCriteria) currentCriteria).getMinTimes());
+
+                resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+                    Customer customer = new Customer();
+
+                    customer.setId(resultSet.getInt("id"));
+                    customer.setName(resultSet.getString("name"));
+                    customer.setLastname(resultSet.getString("last_name"));
+                    customersByProductNameAndCountCriteria.add(customer);
+                }
+
+                allCustomersLists.add(customersByProductNameAndCountCriteria);
+            }
 //            } else if (currentCriteria instanceof MinAndMaxExpensesCriteria) {
 //                query = "SELECT * FROM customers WHERE last_name='Петров'";
 //
@@ -64,7 +91,7 @@ public class Searcher {
 ////                preparedStatement.setString(1, ((BadCustomersCountCriteria) currentCriteria).getLastName());
 //                resultSet = preparedStatement.executeQuery();
 //
-            } else {
+            else {
                 throw new IllegalArgumentException("Не найден корректный критерий");
             }
         }

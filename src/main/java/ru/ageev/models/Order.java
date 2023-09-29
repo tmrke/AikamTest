@@ -2,7 +2,7 @@ package ru.ageev.models;
 
 import java.util.Date;
 
-public class Purchase {
+public class Order {
     private int id;
     private Customer customer;
     private Product product;
