@@ -1,4 +1,4 @@
-package ru.ageev.searcher;
+package ru.ageev.models;
 
 import ru.ageev.criteria.Criteria;
 import ru.ageev.models.Customer;

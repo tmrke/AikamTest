@@ -1,11 +1,13 @@
-package ru.ageev.searcher;
+package ru.ageev.models;
 
+
+import ru.ageev.Type;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchResult {
-        private final String type = "search";
+    private final String type = Type.SEARCH.name();
     private List<SearchResultItem> results;
 
 

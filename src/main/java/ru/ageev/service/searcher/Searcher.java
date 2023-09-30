@@ -1,4 +1,4 @@
-package ru.ageev.searcher;
+package ru.ageev.service.searcher;
 
 import ru.ageev.config.DatabaseConnection;
 import ru.ageev.criteria.*;

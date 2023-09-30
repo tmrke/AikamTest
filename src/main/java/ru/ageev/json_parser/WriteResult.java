@@ -1,7 +1,7 @@
 package ru.ageev.json_parser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ru.ageev.searcher.SearchResult;
+import ru.ageev.models.SearchResult;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,15 +13,13 @@ public class WriteResult {
         this.searchResult = searchResult;
     }
 
-    public void writeOutputFile(){
+    public void writeOutputFile(String fileName){
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            objectMapper.writeValue(new File("output.json"), searchResult);
+            objectMapper.writeValue(new File(fileName), searchResult);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-
-
 }

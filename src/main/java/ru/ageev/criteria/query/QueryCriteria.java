@@ -26,7 +26,10 @@ public enum QueryCriteria {
             "LEFT JOIN orders o ON c.id = o.customer_id " +
             "GROUP BY c.id " +
             "ORDER BY total_orders ASC " +
-            "LIMIT ?;");
+            "LIMIT ?;"),
+    STATISTIC(
+            ""
+    );
     private final String query;
 
     QueryCriteria(String query) {

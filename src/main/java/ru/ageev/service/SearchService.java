@@ -6,9 +6,9 @@ import ru.ageev.json_parser.ReaderCriteria;
 import ru.ageev.json_parser.WriteResult;
 import ru.ageev.mapper.CustomerMapper;
 import ru.ageev.models.Customer;
-import ru.ageev.searcher.SearchResult;
-import ru.ageev.searcher.SearchResultItem;
-import ru.ageev.searcher.Searcher;
+import ru.ageev.models.SearchResult;
+import ru.ageev.models.SearchResultItem;
+import ru.ageev.service.searcher.Searcher;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ public class SearchService {
 
     public SearchService(){}
 
-    public void search(String uri) throws SQLException {
+    public void search(String input, String output) throws SQLException {
         readerCriteria = new ReaderCriteria();
-        searcher = new Searcher(readerCriteria.getCriteriaList(uri));
+        searcher = new Searcher(readerCriteria.getCriteriaList(input));
 
         LinkedHashMap<Criteria, List<CustomerDao>> customersDaoListsByCriteria = searcher.getCustomersDaoByCriteria();
 
@@ -45,6 +45,6 @@ public class SearchService {
         }
 
         writeResult = new WriteResult(searchResult);
-        writeResult.writeOutputFile();
+        writeResult.writeOutputFile(output);
     }
 }
