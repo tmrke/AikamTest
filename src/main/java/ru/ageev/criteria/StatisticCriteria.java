@@ -32,18 +32,11 @@ public class StatisticCriteria implements Criteria {
 
     @Override
     public List<CustomerDao> getCustomersDaoByCriteria(Connection connection, Criteria criteria) throws SQLException {
-        String query =
-                "SELECT orders.customer_id as customer, SUM(products.price) as expenses " +
-                        "FROM orders " +
-                        "JOIN customers ON orders.customer_id = customer.id " +
-                        "JOIN products ON orders.product_id = products.id " +
-                        "WHERE order_date BETWEEN ? AND ? " +
-                        "GROUP BY customers.id" +
-                        "ORDER BY customers.id, expenses DESC";
+        String query = QueryCriteria.STATISTIC.getQuery();
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setDate(1, (java.sql.Date) ((StatisticCriteria) criteria).getStartDate());
-        preparedStatement.setDate(2, (java.sql.Date) ((StatisticCriteria) criteria).getEndDate());
+        preparedStatement.setDate(1, ((StatisticCriteria) criteria).getStartDate());
+        preparedStatement.setDate(2, ((StatisticCriteria) criteria).getEndDate());
 
         return getCustomersDaoByPrepareStatement(preparedStatement);
     }

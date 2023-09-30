@@ -45,6 +45,7 @@ public class Statist {
 
         ResultSet resultSet = preparedStatement.executeQuery();
 
+
         while (resultSet.next()) {
             List<ProductPurchase> productPurchases = new ArrayList<>();
             ProductPurchase productPurchase = new ProductPurchase();
@@ -52,7 +53,7 @@ public class Statist {
             productPurchase.setName(resultSet.getString("product_name"));
             productPurchases.add(productPurchase);
 
-            //TODO записывает только 1 продукт, а не все
+            //TODO записывает только 1 продукт, а не все, но стоимость по нему считает
 
             CustomersDataDao customersDataDao = new CustomersDataDao();
             customersDataDao.setName(resultSet.getString("customers"));

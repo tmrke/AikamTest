@@ -36,8 +36,8 @@ public enum QueryCriteria {
                     "JOIN customers ON orders.customer_id = customers.id " +
                     "JOIN products ON orders.product_id = products.id " +
                     "WHERE order_date BETWEEN ? AND ? " +
-                    "GROUP BY customers.id, products.name " +
-                    "ORDER BY expenses DESC"
+                    "GROUP BY customers.name, products.name " +
+                    "ORDER BY customers.name, expenses DESC"
     );
     private final String query;
 
