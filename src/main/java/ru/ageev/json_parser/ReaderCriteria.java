@@ -7,36 +7,52 @@ import ru.ageev.criteria.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class ReaderCriteria {
     public ReaderCriteria() {
     }
 
-    public List<Criteria> getCriteriaList(String fileName) {
-        ObjectMapper objectMapper = new ObjectMapper();
+    public List<Criteria> getCriteriaList(String fileName, Type type) throws IOException {
         String uri = "src/main/resources/criteria/" + fileName;
 
-        File file = new File(uri);
 
+        switch (type) {
+            case SEARCH -> {
+                return getCriteriaBySearch(uri);
+            }
+            case STAT -> {
+                return getCriteriaByStat(uri);
+            }
+        }
+
+        return null; //TODO ERROR
+    }
+
+    private List<Criteria> getCriteriaByStat(String uri) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode root = objectMapper.readTree(new File(uri));
+        StatisticCriteria criteria = (StatisticCriteria) objectMapper.treeToValue(root, getCriteriaClass(root));
+
+        return Collections.singletonList(criteria);
+    }
+
+    private List<Criteria> getCriteriaBySearch(String uri) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode nodeArray = objectMapper.readTree(new File(uri)).get("criterias");
         List<Criteria> criteriaList = new ArrayList<>();
 
-        try {
-            JsonNode nodeArray = objectMapper.readTree(file).get("criterias");  //TODO выбрать в зависимости от Типа
-
-            if (nodeArray != null && nodeArray.isArray()) {
-                for (JsonNode jsonNode : nodeArray) {
-                    criteriaList.add((Criteria) objectMapper.treeToValue(jsonNode, getCriteriaClass(jsonNode)));
-                }
+        if (nodeArray != null && nodeArray.isArray()) {
+            for (JsonNode jsonNode : nodeArray) {
+                criteriaList.add((Criteria) objectMapper.treeToValue(jsonNode, getCriteriaClass(jsonNode)));
             }
-        } catch (RuntimeException | IOException e) {
-            throw new RuntimeException(e);
         }
 
         return criteriaList;
+    }
+
+    public void statist() {
+
     }
 
     private Class<?> getCriteriaClass(JsonNode jsonNode) {

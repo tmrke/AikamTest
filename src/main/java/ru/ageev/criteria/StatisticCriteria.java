@@ -6,7 +6,7 @@ import ru.ageev.dao.CustomerDao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class StatisticCriteria implements Criteria {
