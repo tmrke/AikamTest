@@ -3,16 +3,16 @@ package ru.ageev.dao;
 import java.util.List;
 
 public class StatisticByDateDao {
-    private int totalDays;
+    private long totalDays;
     private CustomersDataDao customersDataDao;
     private double totalExpenses;
     private double avgExpenses;
 
-    public int getTotalDays() {
+    public long getTotalDays() {
         return totalDays;
     }
 
-    public void setTotalDays(int totalDays) {
+    public void setTotalDays(long totalDays) {
         this.totalDays = totalDays;
     }
 

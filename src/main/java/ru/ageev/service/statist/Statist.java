@@ -3,20 +3,18 @@ package ru.ageev.service.statist;
 import ru.ageev.config.DatabaseConnection;
 import ru.ageev.criteria.Criteria;
 import ru.ageev.criteria.StatisticCriteria;
+import ru.ageev.criteria.query.QueryCriteria;
 import ru.ageev.dao.CustomerDao;
 import ru.ageev.dao.CustomersDataDao;
 import ru.ageev.dao.ProductPurchase;
 import ru.ageev.dao.StatisticByDateDao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class Statist {
@@ -31,28 +29,23 @@ public class Statist {
     }
 
     public void getStatistic() throws SQLException {
-//        String startDate = "2024-01-14";
-//        String endDate = "2024-12-26";
-//
-//        StatisticByDateDao statistic = new StatisticByDateDao();
-//
-//        int totalDays = (int) ChronoUnit.DAYS.between(Instant.ofEpochMilli(Long.parseLong(startDate)), Instant.ofEpochMilli(Long.parseLong(endDate)));
-//        statistic.setTotalDays(totalDays);
+        String startDateStr = ("2024-01-14");
+        String endDateStr = ("2024-12-26");
+
+        LocalDate startDate = LocalDate.parse(startDateStr);
+        LocalDate endDate = LocalDate.parse(endDateStr);
 
         StatisticByDateDao statistic = new StatisticByDateDao();
+
+        long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
+        System.out.println(totalDays);
+
         List<CustomersDataDao> customerDataDaoList = new ArrayList<>();
 
         PreparedStatement preparedStatement = connection.prepareStatement(
-                "SELECT CONCAT(customers.name, ' '" +
-                        ", customers.last_name) as customers" +
-                        ", products.name as product_name" +
-                        ", SUM(products.price) as expenses" +
-                        " FROM orders " +
-                        "JOIN customers ON orders.customer_id = customers.id " +
-                        "JOIN products ON orders.product_id = products.id " +
-                        "WHERE order_date BETWEEN '2024-01-14' AND '2024-12-26' " +
-                        "GROUP BY customers.id, products.name " +
-                        "ORDER BY expenses DESC");
+                QueryCriteria.STATISTIC.getQuery());
+        preparedStatement.setDate(1, Date.valueOf(startDate));
+        preparedStatement.setDate(2, Date.valueOf(endDate));
 
         ResultSet resultSet = preparedStatement.executeQuery();
 

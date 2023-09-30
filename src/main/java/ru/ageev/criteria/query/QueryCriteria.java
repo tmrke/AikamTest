@@ -28,7 +28,16 @@ public enum QueryCriteria {
             "ORDER BY total_orders ASC " +
             "LIMIT ?;"),
     STATISTIC(
-            ""
+            "SELECT CONCAT(customers.name, ' '" +
+                    ", customers.last_name) as customers" +
+                    ", products.name as product_name" +
+                    ", SUM(products.price) as expenses" +
+                    " FROM orders " +
+                    "JOIN customers ON orders.customer_id = customers.id " +
+                    "JOIN products ON orders.product_id = products.id " +
+                    "WHERE order_date BETWEEN ? AND ? " +
+                    "GROUP BY customers.id, products.name " +
+                    "ORDER BY expenses DESC"
     );
     private final String query;
 
