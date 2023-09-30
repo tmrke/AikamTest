@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ToCriteriaParser {
-    public ToCriteriaParser() {
+public class ReaderCriteria {
+    public ReaderCriteria() {
     }
 
     public List<Criteria> getCriteriaList(String uri) {

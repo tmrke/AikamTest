@@ -3,7 +3,6 @@ package ru.ageev.searcher;
 import ru.ageev.config.DatabaseConnection;
 import ru.ageev.criteria.*;
 import ru.ageev.dao.CustomerDao;
-import ru.ageev.models.Customer;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -18,10 +17,10 @@ public class Searcher {
         this.criteriaList = criteriaList;
     }
 
-    public LinkedHashMap<Criteria, List<CustomerDao>> getCustomersByCriteria() throws SQLException {
+    public LinkedHashMap<Criteria, List<CustomerDao>> getCustomersDaoByCriteria() throws SQLException {
         for (Criteria criteria : criteriaList) {
-            List<CustomerDao> customersByCriteria = criteria.getCustomersByCriteria(connection, criteria);
-            criteriaMap.put(criteria, customersByCriteria);
+            List<CustomerDao> customersDaoByCriteria = criteria.getCustomersDaoByCriteria(connection, criteria);
+            criteriaMap.put(criteria, customersDaoByCriteria);
         }
 
         return criteriaMap;

@@ -2,7 +2,6 @@ package ru.ageev.criteria;
 
 import ru.ageev.criteria.query.QueryCriteria;
 import ru.ageev.dao.CustomerDao;
-import ru.ageev.models.Customer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,14 +20,14 @@ public class BadCustomersCountCriteria implements Criteria {
     }
 
     @Override
-    public List<CustomerDao> getCustomersByCriteria(Connection connection, Criteria criteria) throws SQLException {
+    public List<CustomerDao> getCustomersDaoByCriteria(Connection connection, Criteria criteria) throws SQLException {
 
         String query = QueryCriteria.BAD_CUSTOMERS_COUNT.getQuery();
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, ((BadCustomersCountCriteria) criteria).getBadCustomers());
 
-        return getCustomersByPrepareStatement(preparedStatement);
+        return getCustomersDaoByPrepareStatement(preparedStatement);
     }
 
     @Override
