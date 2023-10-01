@@ -1,7 +1,5 @@
 package ru.ageev.models;
 
-import ru.ageev.models.Customer;
-
 public class ProductPurchase {
      private String name;
     private double expenses;

@@ -1,21 +1,21 @@
 package ru.ageev.service;
 
-import ru.ageev.Type;
 import ru.ageev.criteria.StatisticCriteria;
-import ru.ageev.json_parser.ReaderCriteria;
-import ru.ageev.json_parser.WriteResult;
+import ru.ageev.json_convertor.ReaderCriteria;
+import ru.ageev.json_convertor.WriteResult;
 import ru.ageev.models.result.StatisticResult;
 
 
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class StatistService {
+public class StatistService implements Service {
     private ReaderCriteria readerCriteria;
     private WriteResult writeResult;
     private Statist statist;
 
-    public void calculateStatistics(String input, String output) throws IOException, SQLException {
+    @Override
+    public void startProgram(String input, String output) throws IOException, SQLException {
         readerCriteria = new ReaderCriteria();
         StatisticCriteria statisticCriteria = (StatisticCriteria) readerCriteria.getCriteriaList(input, Type.stat).get(0);
 

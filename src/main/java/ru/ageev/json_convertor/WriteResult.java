@@ -1,4 +1,4 @@
-package ru.ageev.json_parser;
+package ru.ageev.json_convertor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.ageev.models.result.Result;
@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class WriteResult {
-    private Result result;
+    private final Result result;
 
     public WriteResult(SearchResult result) {
         this.result = result;

@@ -1,6 +1,6 @@
 package ru.ageev.models.result;
 
-import ru.ageev.Type;
+import ru.ageev.service.Type;
 import ru.ageev.models.CustomersData;
 
 import java.util.List;

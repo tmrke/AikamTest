@@ -1,10 +1,9 @@
 package ru.ageev.service;
 
-import ru.ageev.Type;
 import ru.ageev.criteria.Criteria;
 import ru.ageev.dao.CustomerDao;
-import ru.ageev.json_parser.ReaderCriteria;
-import ru.ageev.json_parser.WriteResult;
+import ru.ageev.json_convertor.ReaderCriteria;
+import ru.ageev.json_convertor.WriteResult;
 import ru.ageev.mapper.CustomerMapper;
 import ru.ageev.models.Customer;
 import ru.ageev.models.result.SearchResult;
@@ -17,15 +16,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SearchService {
-    private Searcher searcher;
+public class SearchService implements Service {
     private ReaderCriteria readerCriteria;
     private WriteResult writeResult;
+    private Searcher searcher;
 
-    public SearchService() {
-    }
 
-    public void search(String input, String output) throws SQLException, IOException {
+    @Override
+    public void startProgram(String input, String output) throws SQLException, IOException {
         readerCriteria = new ReaderCriteria();
         searcher = new Searcher(readerCriteria.getCriteriaList(input, Type.search));
 

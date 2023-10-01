@@ -1,8 +1,8 @@
-package ru.ageev.json_parser;
+package ru.ageev.json_convertor;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ru.ageev.Type;
+import ru.ageev.service.Type;
 import ru.ageev.criteria.*;
 
 import java.io.File;
@@ -49,10 +49,6 @@ public class ReaderCriteria {
         }
 
         return criteriaList;
-    }
-
-    public void statist() {
-
     }
 
     private Class<?> getCriteriaClass(JsonNode jsonNode) {

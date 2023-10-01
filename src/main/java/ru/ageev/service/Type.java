@@ -1,4 +1,4 @@
-package ru.ageev;
+package ru.ageev.service;
 
 public enum Type {
     search,

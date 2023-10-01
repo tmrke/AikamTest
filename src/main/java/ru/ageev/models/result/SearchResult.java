@@ -1,7 +1,7 @@
 package ru.ageev.models.result;
 
 
-import ru.ageev.Type;
+import ru.ageev.service.Type;
 import ru.ageev.models.SearchResultItem;
 
 import java.util.ArrayList;
@@ -20,9 +20,6 @@ public class SearchResult implements Result {
         return type;
     }
 
-    public SearchResult(List<SearchResultItem> results) {
-        this.results = results;
-    }
 
     public void addSearchResultItem(SearchResultItem searchResultItem) {
         results.add(searchResultItem);
