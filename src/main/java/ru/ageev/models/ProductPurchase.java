@@ -1,10 +1,15 @@
-package ru.ageev.dao;
+package ru.ageev.models;
 
 import ru.ageev.models.Customer;
 
 public class ProductPurchase {
-    private String name;
+     private String name;
     private double expenses;
+
+    public ProductPurchase(String name, double expenses) {
+        this.name = name;
+        this.expenses = expenses;
+    }
 
     public String getName() {
         return name;

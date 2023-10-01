@@ -36,6 +36,7 @@ public enum QueryCriteria {
                     "JOIN customers ON orders.customer_id = customers.id " +
                     "JOIN products ON orders.product_id = products.id " +
                     "WHERE order_date BETWEEN ? AND ? " +
+                    "AND DAYOFWEEK(order_date) NOT IN (6, 7) " +
                     "GROUP BY customers.name, products.name " +
                     "ORDER BY customers.name, expenses DESC"
     );

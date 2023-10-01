@@ -18,10 +18,10 @@ public class ReaderCriteria {
 
 
         switch (type) {
-            case SEARCH -> {
+            case search -> {
                 return getCriteriaBySearch(uri);
             }
-            case STAT -> {
+            case stat -> {
                 return getCriteriaByStat(uri);
             }
         }
