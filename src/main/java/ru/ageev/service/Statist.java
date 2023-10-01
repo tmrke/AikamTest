@@ -3,6 +3,7 @@ package ru.ageev.service;
 import ru.ageev.config.DatabaseConnection;
 import ru.ageev.criteria.StatisticCriteria;
 import ru.ageev.criteria.query.QueryCriteria;
+import ru.ageev.exception.IncorrectDateException;
 import ru.ageev.models.CustomersData;
 import ru.ageev.models.ProductPurchase;
 import ru.ageev.models.result.StatisticResult;
@@ -11,6 +12,8 @@ import java.sql.*;
 import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class Statist {
@@ -21,9 +24,11 @@ public class Statist {
         statisticCriteria = criteria;
     }
 
-    public StatisticResult getStatistic() throws SQLException {
+    public StatisticResult getStatistic() throws SQLException, IncorrectDateException {
         Date startDate = statisticCriteria.getStartDate();
         Date endDate = statisticCriteria.getEndDate();
+
+        checkValidDate(startDate, endDate);
 
         StatisticResult statistic = new StatisticResult();
         statistic.setTotalDays(getTotalDays(startDate, endDate));
@@ -120,5 +125,16 @@ public class Statist {
         }
 
         return customers;
+    }
+
+    private void checkValidDate(Date startDate, Date endDate) throws IncorrectDateException {
+        String dateFormatPattern = "yyyy-MM-dd";
+
+        //TODO проверить на валидность
+
+
+        if (endDate.before(startDate)) {
+            throw new IncorrectDateException();
+        }
     }
 }

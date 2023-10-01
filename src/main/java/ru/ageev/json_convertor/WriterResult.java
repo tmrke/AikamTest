@@ -1,6 +1,7 @@
 package ru.ageev.json_convertor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ru.ageev.models.result.ErrorResult;
 import ru.ageev.models.result.Result;
 import ru.ageev.models.result.SearchResult;
 import ru.ageev.models.result.StatisticResult;
@@ -8,14 +9,18 @@ import ru.ageev.models.result.StatisticResult;
 import java.io.File;
 import java.io.IOException;
 
-public class WriteResult {
+public class WriterResult {
     private final Result result;
 
-    public WriteResult(SearchResult result) {
+    public WriterResult(SearchResult result) {
         this.result = result;
     }
 
-    public WriteResult(StatisticResult result) {
+    public WriterResult(StatisticResult result) {
+        this.result = result;
+    }
+
+    public WriterResult(ErrorResult result) {
         this.result = result;
     }
 

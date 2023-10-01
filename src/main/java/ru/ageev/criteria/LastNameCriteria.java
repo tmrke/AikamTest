@@ -25,6 +25,7 @@ public class LastNameCriteria implements Criteria {
 
         PreparedStatement preparedStatement = connection.prepareStatement(query);
         preparedStatement.setString(1, ((LastNameCriteria) criteria).getLastName());
+
         return getCustomersDaoByPrepareStatement(preparedStatement);
     }
 

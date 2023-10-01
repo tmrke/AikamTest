@@ -6,13 +6,11 @@ import ru.ageev.service.Type;
 import ru.ageev.criteria.*;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
 public class ReaderCriteria {
-    public ReaderCriteria() {
-    }
-
     public List<Criteria> getCriteriaList(String fileName, Type type) throws IOException {
         String uri = "src/main/resources/criteria/" + fileName;
 
@@ -26,27 +24,39 @@ public class ReaderCriteria {
             }
         }
 
-        return null; //TODO ERROR
+        return Collections.emptyList();
     }
 
     private List<Criteria> getCriteriaByStat(String uri) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode root = objectMapper.readTree(new File(uri));
-        StatisticCriteria criteria = (StatisticCriteria) objectMapper.treeToValue(root, getCriteriaClass(root));
+        List<Criteria> criteria = new ArrayList<>();
 
-        return Collections.singletonList(criteria);
+        try {
+            JsonNode root = objectMapper.readTree(new File(uri));
+            criteria.add((StatisticCriteria) objectMapper.treeToValue(root, getCriteriaClass(root)));
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException();
+        }
+
+        return criteria;
     }
 
-    private List<Criteria> getCriteriaBySearch(String uri) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode nodeArray = objectMapper.readTree(new File(uri)).get("criterias");
+    private List<Criteria> getCriteriaBySearch(String uri) {
         List<Criteria> criteriaList = new ArrayList<>();
 
-        if (nodeArray != null && nodeArray.isArray()) {
-            for (JsonNode jsonNode : nodeArray) {
-                criteriaList.add((Criteria) objectMapper.treeToValue(jsonNode, getCriteriaClass(jsonNode)));
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode nodeArray = objectMapper.readTree(new File(uri)).get("criterias");
+
+            if (nodeArray != null && nodeArray.isArray()) {
+                for (JsonNode jsonNode : nodeArray) {
+                    criteriaList.add((Criteria) objectMapper.treeToValue(jsonNode, getCriteriaClass(jsonNode)));
+                }
             }
+        } catch (IOException e) {
+            criteriaList = Collections.emptyList();
         }
+
 
         return criteriaList;
     }
@@ -63,10 +73,10 @@ public class ReaderCriteria {
                 case "minExpenses" -> MinAndMaxExpensesCriteria.class;
                 case "badCustomers" -> BadCustomersCountCriteria.class;
                 case "startDate" -> StatisticCriteria.class;
-                default -> throw new IllegalArgumentException("Неправильный формат критериев");
+                default -> ErrorCriteria.class;
             };
         }
 
-        throw new IllegalArgumentException("Неправильный формат критериев");
+        return ErrorCriteria.class;
     }
 }

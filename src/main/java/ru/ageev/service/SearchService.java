@@ -3,9 +3,10 @@ package ru.ageev.service;
 import ru.ageev.criteria.Criteria;
 import ru.ageev.dao.CustomerDao;
 import ru.ageev.json_convertor.ReaderCriteria;
-import ru.ageev.json_convertor.WriteResult;
+import ru.ageev.json_convertor.WriterResult;
 import ru.ageev.mapper.CustomerMapper;
 import ru.ageev.models.Customer;
+import ru.ageev.models.result.ErrorResult;
 import ru.ageev.models.result.SearchResult;
 import ru.ageev.models.SearchResultItem;
 
@@ -18,7 +19,7 @@ import java.util.Map;
 
 public class SearchService implements Service {
     private ReaderCriteria readerCriteria;
-    private WriteResult writeResult;
+    private WriterResult writerResult;
     private Searcher searcher;
 
 
@@ -28,6 +29,16 @@ public class SearchService implements Service {
         searcher = new Searcher(readerCriteria.getCriteriaList(input, Type.search));
 
         LinkedHashMap<Criteria, List<CustomerDao>> customersDaoListsByCriteria = searcher.getCustomersDaoByCriteria();
+
+        if(customersDaoListsByCriteria.isEmpty()){
+            ErrorResult errorResult = new ErrorResult();
+            errorResult.setMessage("Неверный формат критериев");
+
+            writerResult = new WriterResult(errorResult);
+            writerResult.writeOutputFile(output);
+
+            return;
+        }
 
         SearchResult searchResult = new SearchResult();
         List<Customer> customerList = new ArrayList<>();
@@ -44,7 +55,7 @@ public class SearchService implements Service {
             searchResult.addSearchResultItem(searchResultItem);
         }
 
-        writeResult = new WriteResult(searchResult);
-        writeResult.writeOutputFile(output);
+        writerResult = new WriterResult(searchResult);
+        writerResult.writeOutputFile(output);
     }
 }
