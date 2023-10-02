@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class WriterResult {
-    private final Result result;
+    private Result result;
 
     public WriterResult(SearchResult result) {
         this.result = result;
@@ -21,6 +21,18 @@ public class WriterResult {
     }
 
     public WriterResult(ErrorResult result) {
+        this.result = result;
+    }
+
+    public WriterResult() {
+
+    }
+
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
         this.result = result;
     }
 

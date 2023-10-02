@@ -2,6 +2,8 @@ package ru.ageev.service;
 
 import ru.ageev.criteria.Criteria;
 import ru.ageev.dao.CustomerDao;
+import ru.ageev.exception.IncorrectDateException;
+import ru.ageev.exception.IncorrectStartEndDateException;
 import ru.ageev.json_convertor.ReaderCriteria;
 import ru.ageev.json_convertor.WriterResult;
 import ru.ageev.mapper.CustomerMapper;
@@ -24,7 +26,7 @@ public class SearchService implements Service {
 
 
     @Override
-    public void startProgram(String input, String output) throws SQLException, IOException {
+    public void startProgram(String input, String output) throws SQLException, IOException, IncorrectDateException, IncorrectStartEndDateException {
         readerCriteria = new ReaderCriteria();
         searcher = new Searcher(readerCriteria.getCriteriaList(input, Type.search));
 

@@ -2,6 +2,10 @@ package ru.ageev.json_convertor;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import ru.ageev.exception.IncorrectDateException;
+import ru.ageev.exception.IncorrectStartEndDateException;
+import ru.ageev.service.DataValidator;
 import ru.ageev.service.Type;
 import ru.ageev.criteria.*;
 
@@ -11,29 +15,49 @@ import java.io.IOException;
 import java.util.*;
 
 public class ReaderCriteria {
-    public List<Criteria> getCriteriaList(String fileName, Type type) throws IOException {
+    public List<Criteria> getCriteriaList(String fileName, Type type) throws IOException, IncorrectDateException, IncorrectStartEndDateException {
         String uri = "src/main/resources/criteria/" + fileName;
 
-
-        switch (type) {
-            case search -> {
-                return getCriteriaBySearch(uri);
-            }
-            case stat -> {
-                return getCriteriaByStat(uri);
-            }
+        if (type == Type.search) {
+            return getCriteriaBySearch(uri);
+        } else if (type == Type.stat) {
+            return getCriteriaByStat(uri);
         }
 
-        return Collections.emptyList();
+        List<Criteria> error = new ArrayList<>();
+        error.add(new ErrorCriteria());
+
+        return error;
     }
 
-    private List<Criteria> getCriteriaByStat(String uri) throws IOException {
+    private List<Criteria> getCriteriaByStat(String uri) throws IOException, IncorrectStartEndDateException, IncorrectDateException {
         ObjectMapper objectMapper = new ObjectMapper();
         List<Criteria> criteria = new ArrayList<>();
-
         try {
-            JsonNode root = objectMapper.readTree(new File(uri));
-            criteria.add((StatisticCriteria) objectMapper.treeToValue(root, getCriteriaClass(root)));
+            JsonNode root;
+            StatisticCriteria statCriteria;
+
+            try {
+                root = objectMapper.readTree(new File(uri));
+                 statCriteria = (StatisticCriteria) objectMapper.treeToValue(root, getCriteriaClass(root));
+
+            } catch (InvalidFormatException e) {
+                criteria.add(new ErrorCriteria(e.getMessage()));
+                throw new IncorrectDateException();
+            }
+
+
+            try {
+                DataValidator.checkValid(statCriteria.getStartDate(), statCriteria.getEndDate());
+            } catch (IncorrectStartEndDateException e) {
+                criteria.add(new ErrorCriteria(e.getMessage()));
+                throw new IncorrectStartEndDateException();
+            } catch (IncorrectDateException e) {
+                criteria.add(new ErrorCriteria(e.getMessage()));
+                throw new IncorrectDateException();
+            }
+
+            criteria.add(statCriteria);
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException();
         }
@@ -67,14 +91,18 @@ public class ReaderCriteria {
         while (fieldNames.hasNext()) {
             String str = fieldNames.next();
 
-            return switch (str) {
-                case "lastName" -> LastNameCriteria.class;
-                case "productName" -> ProductNameAndCountCriteria.class;
-                case "minExpenses" -> MinAndMaxExpensesCriteria.class;
-                case "badCustomers" -> BadCustomersCountCriteria.class;
-                case "startDate" -> StatisticCriteria.class;
-                default -> ErrorCriteria.class;
-            };
+            switch (str) {
+                case "lastName":
+                    return LastNameCriteria.class;
+                case "productName":
+                    return ProductNameAndCountCriteria.class;
+                case "minExpenses":
+                    return MinAndMaxExpensesCriteria.class;
+                case "badCustomers":
+                    return BadCustomersCountCriteria.class;
+                case "startDate":
+                    return StatisticCriteria.class;
+            }
         }
 
         return ErrorCriteria.class;
