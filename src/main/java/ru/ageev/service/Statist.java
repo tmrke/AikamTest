@@ -10,10 +10,11 @@ import ru.ageev.models.result.StatisticResult;
 
 import java.sql.*;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+
 import java.util.*;
 
 public class Statist {
@@ -131,7 +132,6 @@ public class Statist {
         String dateFormatPattern = "yyyy-MM-dd";
 
         //TODO проверить на валидность
-
 
         if (endDate.before(startDate)) {
             throw new IncorrectDateException();
