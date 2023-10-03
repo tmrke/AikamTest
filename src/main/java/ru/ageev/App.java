@@ -10,9 +10,9 @@ import java.sql.*;
 
 public class App {
     public static void main(String[] args) throws SQLException, IOException, IncorrectStartEndDateException, IncorrectDateException {
-        String inputFileName = "criteria2.json";
+        String inputFileName = "criteria1.json";
         String outputFileName = "output2.json";
-        String type = "stat";
+        String type = "search";
 
 //        String type = args[0];
 //        String inputFileName = args[1];
@@ -27,9 +27,6 @@ public class App {
         } else {
             service = new ErrorService(type);
         }
-
-        //TODO сделать проверку формата времени
-        //Переписать бд для postresql
 
         service.startProgram(inputFileName, outputFileName);
     }

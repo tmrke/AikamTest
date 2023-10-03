@@ -43,11 +43,12 @@ public class SearchService implements Service {
         }
 
         SearchResult searchResult = new SearchResult();
-        List<Customer> customerList = new ArrayList<>();
 
         for (Map.Entry<Criteria, List<CustomerDao>> entry : customersDaoListsByCriteria.entrySet()) {
             Criteria criteria = entry.getKey();
             List<CustomerDao> customerDaoList = entry.getValue();
+
+            List<Customer> customerList = new ArrayList<>();
 
             for (CustomerDao customerDao : customerDaoList) {
                 customerList.add(CustomerMapper.getCustomer(customerDao));

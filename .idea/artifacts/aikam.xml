@@ -4,6 +4,7 @@
     <root id="archive" name="aikam.jar">
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+        <element id="archive" name="archive.jar" />
       </element>
     </root>
   </artifact>
