@@ -43,4 +43,3 @@ public class CustomersData {
         return name + ": " + Arrays.toString(purchases.toArray()) + ", total expenses: " + totalExpenses + "\n";
     }
 }
-

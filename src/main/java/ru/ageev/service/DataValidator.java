@@ -18,6 +18,4 @@ public class DataValidator {
             throw new IncorrectStartEndDateException();
         }
     }
-
-
 }

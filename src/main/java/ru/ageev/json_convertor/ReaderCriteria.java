@@ -39,13 +39,11 @@ public class ReaderCriteria {
 
             try {
                 root = objectMapper.readTree(new File(uri));
-                 statCriteria = (StatisticCriteria) objectMapper.treeToValue(root, getCriteriaClass(root));
-
+                statCriteria = (StatisticCriteria) objectMapper.treeToValue(root, getCriteriaClass(root));
             } catch (InvalidFormatException e) {
                 criteria.add(new ErrorCriteria(e.getMessage()));
                 throw new IncorrectDateException();
             }
-
 
             try {
                 DataValidator.checkValid(statCriteria.getStartDate(), statCriteria.getEndDate());
@@ -80,7 +78,6 @@ public class ReaderCriteria {
         } catch (IOException e) {
             criteriaList = Collections.emptyList();
         }
-
 
         return criteriaList;
     }

@@ -11,16 +11,10 @@ import ru.ageev.models.result.StatisticResult;
 
 import java.sql.*;
 import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 public class Statist {
     private final Connection connection = DatabaseConnection.getConnection();
@@ -34,7 +28,6 @@ public class Statist {
         Date startDate = statisticCriteria.getStartDate();
         Date endDate = statisticCriteria.getEndDate();
         DataValidator.checkValid(startDate, endDate);
-
 
         StatisticResult statistic = new StatisticResult();
         statistic.setTotalDays(getTotalDays(startDate, endDate));

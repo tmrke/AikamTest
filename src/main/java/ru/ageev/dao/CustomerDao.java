@@ -28,5 +28,4 @@ public class CustomerDao {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
-
 }

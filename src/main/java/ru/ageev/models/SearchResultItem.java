@@ -8,8 +8,6 @@ public class SearchResultItem {
     private Criteria criteria;
     private List<Customer> results;
 
-    public SearchResultItem(){}
-
     public SearchResultItem(Criteria criteria, List<Customer> results){
         this.criteria = criteria;
         this.results = results;

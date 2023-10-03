@@ -11,7 +11,6 @@ public class SearchResult implements Result {
     private final String type = Type.search.name();
     private List<SearchResultItem> results;
 
-
     public SearchResult() {
         results = new ArrayList<>();
     }
@@ -19,7 +18,6 @@ public class SearchResult implements Result {
     public String getType() {
         return type;
     }
-
 
     public void addSearchResultItem(SearchResultItem searchResultItem) {
         results.add(searchResultItem);
