@@ -1,10 +1,12 @@
 package ru.ageev.json_convertor;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import ru.ageev.exception.IncorrectDateException;
 import ru.ageev.exception.IncorrectStartEndDateException;
+import ru.ageev.exception.NotFoundResultCriteriaException;
 import ru.ageev.service.DataValidator;
 import ru.ageev.service.Type;
 import ru.ageev.criteria.*;
@@ -15,7 +17,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class ReaderCriteria {
-    public List<Criteria> getCriteriaList(String fileName, Type type) throws IOException, IncorrectDateException, IncorrectStartEndDateException {
+    public List<Criteria> getCriteriaList(String fileName, Type type) throws IOException, IncorrectDateException, IncorrectStartEndDateException, NotFoundResultCriteriaException {
         String uri = "src/main/resources/criteria/" + fileName;
 
         if (type == Type.search) {
@@ -56,14 +58,16 @@ public class ReaderCriteria {
             }
 
             criteria.add(statCriteria);
-        } catch (FileNotFoundException e) {
+        } catch (JsonParseException e){
+            criteria.add(new ErrorCriteria(e.getMessage()));
+        }catch (FileNotFoundException e) {
             throw new FileNotFoundException();
         }
 
         return criteria;
     }
 
-    private List<Criteria> getCriteriaBySearch(String uri) throws IOException {
+    private List<Criteria> getCriteriaBySearch(String uri) throws IOException, NotFoundResultCriteriaException {
         ObjectMapper objectMapper = new ObjectMapper();
         List<Criteria> criteria = new ArrayList<>();
 
@@ -75,6 +79,10 @@ public class ReaderCriteria {
                 for (JsonNode jsonNode : nodeArray) {
                     criteria.add((Criteria) objectMapper.treeToValue(jsonNode, getCriteriaClass(jsonNode)));
                 }
+            }
+
+            if (criteria.isEmpty()) {
+                throw new NotFoundResultCriteriaException();
             }
         } catch (FileNotFoundException e) {
             criteria.add(new ErrorCriteria("Не найден файл: " + uri));

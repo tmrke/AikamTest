@@ -10,9 +10,9 @@ import java.sql.*;
 
 public class App {
     public static void main(String[] args) throws SQLException, IOException, IncorrectStartEndDateException, IncorrectDateException {
-        String inputFileName = "criteria1.json";
-        String outputFileName = "output1.json";
-        String type = "search";
+        String inputFileName = "criteria2.json";
+        String outputFileName = "output2.json";
+        String type = "stat";
 
 //        String type = args[0];
 //        String inputFileName = args[1];

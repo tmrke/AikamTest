@@ -1,9 +1,11 @@
 package ru.ageev.service;
 
 import ru.ageev.criteria.Criteria;
+import ru.ageev.criteria.ErrorCriteria;
 import ru.ageev.dao.CustomerDao;
 import ru.ageev.exception.IncorrectDateException;
 import ru.ageev.exception.IncorrectStartEndDateException;
+import ru.ageev.exception.NotFoundResultCriteriaException;
 import ru.ageev.json_convertor.ReaderCriteria;
 import ru.ageev.json_convertor.WriterResult;
 import ru.ageev.mapper.CustomerMapper;
@@ -54,6 +56,8 @@ public class SearchService implements Service {
 
                 writerResult.setResult(searchResult);
             }
+        } catch (NotFoundResultCriteriaException e) {
+            writerResult = new WriterResult(new ErrorResult(e.getMessage()));
         } catch (FileNotFoundException e) {
             writerResult = new WriterResult(new ErrorResult("Не найден файл: " + input));
         } catch (IOException e) {

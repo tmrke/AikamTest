@@ -4,6 +4,7 @@ import ru.ageev.criteria.Criteria;
 import ru.ageev.criteria.StatisticCriteria;
 import ru.ageev.exception.IncorrectDateException;
 import ru.ageev.exception.IncorrectStartEndDateException;
+import ru.ageev.exception.NotFoundResultCriteriaException;
 import ru.ageev.json_convertor.ReaderCriteria;
 import ru.ageev.json_convertor.WriterResult;
 import ru.ageev.models.result.ErrorResult;
@@ -33,12 +34,16 @@ public class StatistService implements Service {
             StatisticResult statisticResult = statist.getStatistic();
 
             writerResult.setResult(statisticResult);
+        }catch (ClassCastException e){
+            writerResult.setResult(new ErrorResult("Неверный формат критерия"));
         } catch (IncorrectDateException e) {
             writerResult.setResult(new ErrorResult(e.getMessage()));
         } catch (IncorrectStartEndDateException e) {
             writerResult.setResult(new ErrorResult(e.getMessage()));
         } catch (FileNotFoundException e) {
             writerResult.setResult(new ErrorResult("Не найден файл: " + input));
+        } catch (NotFoundResultCriteriaException e) {
+            writerResult.setResult(new ErrorResult(e.getMessage()));
         } finally {
             writerResult.writeOutputFile(output);
         }
