@@ -63,23 +63,28 @@ public class ReaderCriteria {
         return criteria;
     }
 
-    private List<Criteria> getCriteriaBySearch(String uri) {
-        List<Criteria> criteriaList = new ArrayList<>();
+    private List<Criteria> getCriteriaBySearch(String uri) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Criteria> criteria = new ArrayList<>();
 
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode nodeArray = objectMapper.readTree(new File(uri)).get("criterias");
+            JsonNode nodeArray;
+            nodeArray = objectMapper.readTree(new File(uri)).get("criterias");
 
             if (nodeArray != null && nodeArray.isArray()) {
                 for (JsonNode jsonNode : nodeArray) {
-                    criteriaList.add((Criteria) objectMapper.treeToValue(jsonNode, getCriteriaClass(jsonNode)));
+                    criteria.add((Criteria) objectMapper.treeToValue(jsonNode, getCriteriaClass(jsonNode)));
                 }
             }
+        } catch (FileNotFoundException e) {
+            criteria.add(new ErrorCriteria("Не найден файл: " + uri));
+            throw new FileNotFoundException();
         } catch (IOException e) {
-            criteriaList = Collections.emptyList();
+            criteria.add(new ErrorCriteria("Неверный формат критерия"));
+            throw new IOException();
         }
 
-        return criteriaList;
+        return criteria;
     }
 
     private Class<?> getCriteriaClass(JsonNode jsonNode) {

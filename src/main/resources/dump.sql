@@ -31,20 +31,34 @@ insert into customers(last_name, name)
 values ('Светланова', 'Светлана');
 
 
-create table product
+create table products
 (
-    id    SERIAL,
+    id    SERIAL primary key,
     name  varchar unique not null,
     price double precision check ( price > 0 )
-) insert into  product(name, price) values ('Молоко', 10);
-insert into product(name, price)
+);
+
+insert into products(name, price)
+values ('Молоко', 15);
+insert into products(name, price)
 values ('Минеральная вода', 5);
-insert into product(name, price)
+insert into products(name, price)
+values ('хлеб', 10);
+insert into products(name, price)
 values ('Клубника', 30);
-insert into product(name, price)
+insert into products(name, price)
 values ('Шоколад', 20);
-insert into product(name, price)
+insert into products(name, price)
 values ('Колбаса', 40);
+insert into products(name, price)
+values ('мясо', 60);
+insert into products(name, price)
+values ('икра', 100);
+insert into products(name, price)
+values ('лапша', 20);
+insert into products(name, price)
+values ('кефир', 25);
+
 
 
 create table orders
@@ -55,27 +69,26 @@ create table orders
     order_date  DATE not null,
     FOREIGN KEY (customer_id) REFERENCES customers (id),
     FOREIGN KEY (product_id) REFERENCES products (id)
-
 );
 
 INSERT INTO orders (customer_id, product_id, order_date)
-VALUES (1, 12, '2023-08-17'),
+VALUES (1, 2, '2023-08-17'),
        (2, 2, '2022-11-15'),
        (3, 2, '2023-03-30'),
        (4, 10, '2022-10-14'),
-       (7, 11, '2023-09-17'),
+       (7, 1, '2023-09-17'),
        (8, 5, '2022-10-23'),
-       (9, 11, '2023-03-02'),
-       (10, 12, '2023-02-21'),
+       (9, 4, '2023-03-02'),
+       (10, 2, '2023-02-21'),
        (11, 9, '2022-10-27'),
-       (12, 12, '2023-02-25'),
-       (13, 8, '2022-10-29'),
-       (14, 6, '2023-08-07'),
-       (15, 10, '2023-08-30'),
-       (16, 5, '2023-08-22'),
-       (17, 3, '2023-03-21'),
-       (19, 9, '2023-09-01'),
-       (20, 2, '2023-06-08'),
+       (11, 2, '2023-02-25'),
+       (1, 8, '2022-10-29'),
+       (4, 6, '2023-08-07'),
+       (5, 10, '2023-08-30'),
+       (6, 5, '2023-08-22'),
+       (7, 3, '2023-03-21'),
+       (9, 9, '2023-09-01'),
+       (2, 2, '2023-06-08'),
        (5, 6, '2023-01-03'),
        (6, 6, '2023-03-04'),
-       (18, 6, '2023-09-20');
+       (8, 6, '2023-09-20');

@@ -9,7 +9,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class BadCustomersCountCriteria implements Criteria {
-    private final int badCustomers;
+      private int badCustomers;
+
+      public BadCustomersCountCriteria(){}
 
     public BadCustomersCountCriteria(int badCustomers) {
         this.badCustomers = badCustomers;
@@ -17,6 +19,10 @@ public class BadCustomersCountCriteria implements Criteria {
 
     public int getBadCustomers() {
         return badCustomers;
+    }
+
+    public void setBadCustomers(int badCustomers) {
+        this.badCustomers = badCustomers;
     }
 
     @Override

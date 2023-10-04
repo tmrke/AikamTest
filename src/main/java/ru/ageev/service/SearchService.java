@@ -12,6 +12,7 @@ import ru.ageev.models.result.ErrorResult;
 import ru.ageev.models.result.SearchResult;
 import ru.ageev.models.SearchResultItem;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,39 +27,39 @@ public class SearchService implements Service {
 
 
     @Override
-    public void startProgram(String input, String output) throws SQLException, IOException, IncorrectDateException, IncorrectStartEndDateException {
+    public void startProgram(String input, String output) throws SQLException, IncorrectDateException, IncorrectStartEndDateException {
         readerCriteria = new ReaderCriteria();
-        searcher = new Searcher(readerCriteria.getCriteriaList(input, Type.search));
 
-        LinkedHashMap<Criteria, List<CustomerDao>> customersDaoListsByCriteria = searcher.getCustomersDaoByCriteria();
+        SearchResult searchResult;
+        writerResult = new WriterResult();
 
-        if(customersDaoListsByCriteria.isEmpty()){
-            ErrorResult errorResult = new ErrorResult();
-            errorResult.setMessage("Неверный формат критериев");
+        try {
+            searcher = new Searcher(readerCriteria.getCriteriaList(input, Type.search));
+            LinkedHashMap<Criteria, List<CustomerDao>> customersDaoListsByCriteria = searcher.getCustomersDaoByCriteria();
 
-            writerResult = new WriterResult(errorResult);
-            writerResult.writeOutputFile(output);
+            searchResult = new SearchResult();
 
-            return;
-        }
+            for (Map.Entry<Criteria, List<CustomerDao>> entry : customersDaoListsByCriteria.entrySet()) {
+                Criteria criteria = entry.getKey();
+                List<CustomerDao> customerDaoList = entry.getValue();
 
-        SearchResult searchResult = new SearchResult();
+                List<Customer> customerList = new ArrayList<>();
 
-        for (Map.Entry<Criteria, List<CustomerDao>> entry : customersDaoListsByCriteria.entrySet()) {
-            Criteria criteria = entry.getKey();
-            List<CustomerDao> customerDaoList = entry.getValue();
+                for (CustomerDao customerDao : customerDaoList) {
+                    customerList.add(CustomerMapper.getCustomer(customerDao));
+                }
 
-            List<Customer> customerList = new ArrayList<>();
+                SearchResultItem searchResultItem = new SearchResultItem(criteria, customerList);
+                searchResult.addSearchResultItem(searchResultItem);
 
-            for (CustomerDao customerDao : customerDaoList) {
-                customerList.add(CustomerMapper.getCustomer(customerDao));
+                writerResult.setResult(searchResult);
             }
-
-            SearchResultItem searchResultItem = new SearchResultItem(criteria, customerList);
-            searchResult.addSearchResultItem(searchResultItem);
+        } catch (FileNotFoundException e) {
+            writerResult = new WriterResult(new ErrorResult("Не найден файл: " + input));
+        } catch (IOException e) {
+            writerResult = new WriterResult(new ErrorResult("Неверный формат критериев"));
+        } finally {
+            writerResult.writeOutputFile(output);
         }
-
-        writerResult = new WriterResult(searchResult);
-        writerResult.writeOutputFile(output);
     }
 }
